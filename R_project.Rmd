@@ -4,12 +4,9 @@ subtitle: "An Inference Problem"
 author: "Camilla Quaglia"
 date: "June 8th 2021"
 output:
-  html_document:
-    keep_md: true
-    toc: true
-    number_sections: true
-    toc_float: 
-        collapsed: false
+  github_document:
+    pandoc_args: --webtex
+    
 ---
 
 ```{r setup, include=FALSE}
@@ -46,21 +43,18 @@ From Moderna’s press release (November 16, 2020): *" This first interim analys
 - $n_{V_{A}}$ and $n_{P_{A}}$ = number of assaulted individuals in each group
 <br />
 <br />
-<font size= "3">
+  
 The assaulted individuals of the vaccinated group are protected by the vaccine. If $\epsilon$ is the **efficacy** of the vaccine, the probability for them of being infected is equal to 1 − $\epsilon$ .
-<br />
 <br />
 <center>
 $n_{V_{A}} \sim Binom(n_{V},p_{A})$
-<br />
-<br />
+</center>
+<center>
 $n_{P_{A}} \sim Binom(n_{P},p_{A})$
-<br />
-<br />
+</center>
+<center>
 $n_{V_{I}} \sim Binom(n_{V_{A}},1-\epsilon)$
 </center>
-<br />
-<br />
 The calculation is done through a MCMC with the help of the program `JAGS`, that is interfaced with `R` via the package `rjags`
 
 ```{r}
@@ -87,9 +81,9 @@ The priors both for the $p_{A}$ and $prob$ (= the probability that an assaulted 
 
 # Data
 <center>
-Moderna: $n_{V_{I}} = 5$ $~$$~$$~$ $n_{P_{I}}=90$
+Moderna: $n_{V_{I}} = 5$ $~$$~$ $n_{P_{I}}=90$
 <br />
-Pfizer:  $n_{V_{I}} = 8$ $~$$~$$~$ $n_{P_{I}}=162$
+Pfizer:  $n_{V_{I}} = 8$ $~$$~$ $n_{P_{I}}=162$
 </center>
 <br />
 What about $n_{V}$ and $n_{P}$ ? The exact number is not critical at all in regard to the value of efficacy (if they are enough larger than $n_{V_{I}}$ and $n_{P_{I}}$)
@@ -98,7 +92,7 @@ What about $n_{V}$ and $n_{P}$ ? The exact number is not critical at all in rega
 # Analysis and Results
 The model is red using the `jags.model` function. The latter creates an object of the class `jags`.
 
-$~$
+
 ```{r}
 # function to COMPILE THE MODEL
 
@@ -499,7 +493,7 @@ effectiveSize(posterior_moderna)
 effectiveSize(posterior_pfizer)
 ```
 # Size-independent model
-Proof that the result for the *efficacy* does not depend on the initial $n_{V}$ and $n_{P}$. The proof is only for Moderna’s vaccine. 
+Proof that the result for the *efficacy* does not depend on the initial n_{V} and n_{P}. The proof is only for Moderna’s vaccine. 
 ```{r}
 model_jags_proof <- function(nP) {
   M <- jags.model(textConnection(model_vaccine),data=list(nV.I=5,nP.I=90,nV=nP,nP=nP),inits = list(.RNG.name= "base::Wichmann-Hill", .RNG.seed=1234))

@@ -26,26 +26,58 @@ June 8th 2021
 
 ![](n.PNG)
 
-  - \(n_{V}\) = number of individuals in the vaccine group
-  - \(n_{P}\) = number of individuals in the placebo group
-  - \(n_{V_{I}}\) and \(n_{P_{I}}\) = number of infected individual, in
-    the two groups, after the trial period
-  - \(p_{A}\) = assault probability
-  - \(n_{V_{A}}\) and \(n_{P_{A}}\) = number of assaulted individuals in
-    each group <br /> <br /> <font size= "3"> The assaulted individuals
-    of the vaccinated group are protected by the vaccine. If
-    \(\epsilon\) is the **efficacy** of the vaccine, the probability for
-    them of being infected is equal to 1 − \(\epsilon\) . <br /> <br />
-    <center>
-    \(n_{V_{A}} \sim Binom(n_{V},p_{A})\) <br /> <br />
-    \(n_{P_{A}} \sim Binom(n_{P},p_{A})\) <br /> <br />
-    \(n_{V_{I}} \sim Binom(n_{V_{A}},1-\epsilon)\)
-    </center>
-    <br /> <br /> The calculation is done through a MCMC with the help
-    of the program `JAGS`, that is interfaced with `R` via the package
-    `rjags`
+  - ![n\_{V}](https://latex.codecogs.com/png.latex?n_%7BV%7D "n_{V}") =
+    number of individuals in the vaccine group
+  - ![n\_{P}](https://latex.codecogs.com/png.latex?n_%7BP%7D "n_{P}") =
+    number of individuals in the placebo
+    group
+  - ![n\_{V\_{I}}](https://latex.codecogs.com/png.latex?n_%7BV_%7BI%7D%7D
+    "n_{V_{I}}") and
+    ![n\_{P\_{I}}](https://latex.codecogs.com/png.latex?n_%7BP_%7BI%7D%7D
+    "n_{P_{I}}") = number of infected individual, in the two groups,
+    after the trial period
+  - ![p\_{A}](https://latex.codecogs.com/png.latex?p_%7BA%7D "p_{A}") =
+    assault
+    probability
+  - ![n\_{V\_{A}}](https://latex.codecogs.com/png.latex?n_%7BV_%7BA%7D%7D
+    "n_{V_{A}}") and
+    ![n\_{P\_{A}}](https://latex.codecogs.com/png.latex?n_%7BP_%7BA%7D%7D
+    "n_{P_{A}}") = number of assaulted individuals in each group <br />
+    <br />
 
-<!-- end list -->
+The assaulted individuals of the vaccinated group are protected by the
+vaccine. If ![\\epsilon](https://latex.codecogs.com/png.latex?%5Cepsilon
+"\\epsilon") is the **efficacy** of the vaccine, the probability for
+them of being infected is equal to 1 −
+![\\epsilon](https://latex.codecogs.com/png.latex?%5Cepsilon
+"\\epsilon") . <br />
+
+<center>
+
+![n\_{V\_{A}} \\sim
+Binom(n\_{V},p\_{A})](https://latex.codecogs.com/png.latex?n_%7BV_%7BA%7D%7D%20%5Csim%20Binom%28n_%7BV%7D%2Cp_%7BA%7D%29
+"n_{V_{A}} \\sim Binom(n_{V},p_{A})")
+
+</center>
+
+<center>
+
+![n\_{P\_{A}} \\sim
+Binom(n\_{P},p\_{A})](https://latex.codecogs.com/png.latex?n_%7BP_%7BA%7D%7D%20%5Csim%20Binom%28n_%7BP%7D%2Cp_%7BA%7D%29
+"n_{P_{A}} \\sim Binom(n_{P},p_{A})")
+
+</center>
+
+<center>
+
+![n\_{V\_{I}} \\sim
+Binom(n\_{V\_{A}},1-\\epsilon)](https://latex.codecogs.com/png.latex?n_%7BV_%7BI%7D%7D%20%5Csim%20Binom%28n_%7BV_%7BA%7D%7D%2C1-%5Cepsilon%29
+"n_{V_{I}} \\sim Binom(n_{V_{A}},1-\\epsilon)")
+
+</center>
+
+The calculation is done through a MCMC with the help of the program
+`JAGS`, that is interfaced with `R` via the package `rjags`
 
 ``` r
 library(rjags)
@@ -76,28 +108,44 @@ epsilon <- 1 - prob         # the quantity we want to trace in the chain
 }"
 ```
 
-The priors both for the \(p_{A}\) and \(prob\) (= the probability that
-an assaulted vaccinated person being infected) are **uniform priors**.
+The priors both for the
+![p\_{A}](https://latex.codecogs.com/png.latex?p_%7BA%7D "p_{A}") and
+![prob](https://latex.codecogs.com/png.latex?prob "prob") (= the
+probability that an assaulted vaccinated person being infected) are
+**uniform priors**.
 
 # Data
 
 <center>
 
-Moderna: \(n_{V_{I}} = 5\) \(~\)\(~\)\(~\) \(n_{P_{I}}=90\) <br />
-Pfizer: \(n_{V_{I}} = 8\) \(~\)\(~\)\(~\) \(n_{P_{I}}=162\)
+Moderna: ![n\_{V\_{I}}
+= 5](https://latex.codecogs.com/png.latex?n_%7BV_%7BI%7D%7D%20%3D%205
+"n_{V_{I}} = 5") ![~](https://latex.codecogs.com/png.latex?~
+"~")![~](https://latex.codecogs.com/png.latex?~ "~")
+![n\_{P\_{I}}=90](https://latex.codecogs.com/png.latex?n_%7BP_%7BI%7D%7D%3D90
+"n_{P_{I}}=90") <br /> Pfizer: ![n\_{V\_{I}}
+= 8](https://latex.codecogs.com/png.latex?n_%7BV_%7BI%7D%7D%20%3D%208
+"n_{V_{I}} = 8") ![~](https://latex.codecogs.com/png.latex?~
+"~")![~](https://latex.codecogs.com/png.latex?~ "~")
+![n\_{P\_{I}}=162](https://latex.codecogs.com/png.latex?n_%7BP_%7BI%7D%7D%3D162
+"n_{P_{I}}=162")
 
 </center>
 
-<br /> What about \(n_{V}\) and \(n_{P}\) ? The exact number is not
-critical at all in regard to the value of efficacy (if they are enough
-larger than \(n_{V_{I}}\) and \(n_{P_{I}}\))
+<br /> What about
+![n\_{V}](https://latex.codecogs.com/png.latex?n_%7BV%7D "n_{V}") and
+![n\_{P}](https://latex.codecogs.com/png.latex?n_%7BP%7D "n_{P}") ? The
+exact number is not critical at all in regard to the value of efficacy
+(if they are enough larger than
+![n\_{V\_{I}}](https://latex.codecogs.com/png.latex?n_%7BV_%7BI%7D%7D
+"n_{V_{I}}") and
+![n\_{P\_{I}}](https://latex.codecogs.com/png.latex?n_%7BP_%7BI%7D%7D
+"n_{P_{I}}"))
 
 # Analysis and Results
 
 The model is red using the `jags.model` function. The latter creates an
 object of the class `jags`.
-
-\(~\)
 
 ``` r
 # function to COMPILE THE MODEL
@@ -445,13 +493,18 @@ cat(paste("The mean and the corresponding std for Pfizer's nV.A \n",round(mean.n
     ##  161 +/- 18
 
 Same order of magnitude of the number of infected of the placebo groups,
-\(n_{P_{I}}\) <br /> <br />
+![n\_{P\_{I}}](https://latex.codecogs.com/png.latex?n_%7BP_%7BI%7D%7D
+"n_{P_{I}}") <br /> <br />
 
 <center>
 
-Moderna: \(n_{P_{I}}\)=90
+Moderna:
+![n\_{P\_{I}}](https://latex.codecogs.com/png.latex?n_%7BP_%7BI%7D%7D
+"n_{P_{I}}")=90
 
-Pfizer: \(n_{P_{I}}\)=162
+Pfizer:
+![n\_{P\_{I}}](https://latex.codecogs.com/png.latex?n_%7BP_%7BI%7D%7D
+"n_{P_{I}}")=162
 
 </center>
 
@@ -554,22 +607,30 @@ many convergence diagnostics.
 
 ## Geweke diagnostic
 
-<br /> <br /> \(X_{1}\) and \(X_{2}\) are the two samples, \(T\) mean
-test <br />
-<br />
+<br /> <br /> ![X\_{1}](https://latex.codecogs.com/png.latex?X_%7B1%7D
+"X_{1}") and ![X\_{2}](https://latex.codecogs.com/png.latex?X_%7B2%7D
+"X_{2}") are the two samples,
+![T](https://latex.codecogs.com/png.latex?T "T") mean test <br /> <br />
 
 <center>
 
-\(T= \frac{\bar{X_{1}}-\bar{X_{2}}}{\sqrt{\frac{s1^2}{n}+\frac{s2^2}{m}}}\)
+![T=
+\\frac{\\bar{X\_{1}}-\\bar{X\_{2}}}{\\sqrt{\\frac{s1^2}{n}+\\frac{s2^2}{m}}}](https://latex.codecogs.com/png.latex?T%3D%20%5Cfrac%7B%5Cbar%7BX_%7B1%7D%7D-%5Cbar%7BX_%7B2%7D%7D%7D%7B%5Csqrt%7B%5Cfrac%7Bs1%5E2%7D%7Bn%7D%2B%5Cfrac%7Bs2%5E2%7D%7Bm%7D%7D%7D
+"T= \\frac{\\bar{X_{1}}-\\bar{X_{2}}}{\\sqrt{\\frac{s1^2}{n}+\\frac{s2^2}{m}}}")
 
 </center>
 
-<br /> When \(n,m \rightarrow \infty\) \(T\) can be approximated using
-the standard normal \(Z\). <br /> <br />
+<br /> When ![n,m \\rightarrow
+\\infty](https://latex.codecogs.com/png.latex?n%2Cm%20%5Crightarrow%20%5Cinfty
+"n,m \\rightarrow \\infty") ![T](https://latex.codecogs.com/png.latex?T
+"T") can be approximated using the standard normal
+![Z](https://latex.codecogs.com/png.latex?Z "Z"). <br /> <br />
 
 <center>
 
-\(Z = \frac{X-\mu}{\sigma}\)
+![Z =
+\\frac{X-\\mu}{\\sigma}](https://latex.codecogs.com/png.latex?Z%20%3D%20%5Cfrac%7BX-%5Cmu%7D%7B%5Csigma%7D
+"Z = \\frac{X-\\mu}{\\sigma}")
 
 </center>
 
@@ -674,7 +735,7 @@ text(40,0.80,sprintf("effective size: %.2f",effectiveSize(posterior_pfizer[,2]))
 # Size-independent model
 
 Proof that the result for the *efficacy* does not depend on the initial
-\(n_{V}\) and \(n_{P}\). The proof is only for Moderna’s vaccine.
+n\_{V} and n\_{P}. The proof is only for Moderna’s vaccine.
 
 ``` r
 model_jags_proof <- function(nP) {
